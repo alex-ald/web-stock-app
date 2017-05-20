@@ -1,0 +1,87 @@
+html {
+  box-sizing: border-box
+}
+
+html {
+  -ms-overflow-style: scrollbar;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box
+}
+
+body {
+  background-color: #F7F7F7 !important;
+  color: #555;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+.mainContent {
+  max-width: 900px;
+}
+
+.header-centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-centered {
+  text-align: center;
+}
+
+.stock-table {
+  width: 100%;
+  text-align: center;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.stock-table > :nth-child(odd) {
+  background: #9FC9CE;
+}
+
+.stock-table > :first-child {
+  border: 1px solid black;
+  border-collapse: collapse;
+  background: #967D69;
+  color: white;
+}
+
+.positive-price-change {
+  color: green;
+}
+
+.negative-price-change {
+  color: red;
+}
+
+.last-fetched-text {
+  text-align: left;
+  margin-bottom: .5em;
+  margin-top: 0;
+  font-size: .9em;
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .openSidebar {
+        margin-left: 0px !important;
+        opacity: .4;
+    }
+}

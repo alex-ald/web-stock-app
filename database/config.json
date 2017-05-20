@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "root",
+    "password": "password123",
+    "database": "webstockdev",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "kdispatch",
+    "password": "DDyvRThYIUGItf8GYIHD^7*76iftR^D^D*HH",
+    "database": "kdispatch",
+    "host": "kdispatch-dev.c3pb2j6vgcqw.us-east-1.rds.amazonaws.com",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "root",
+    "password": "password123",
+    "database": "webstockprod",
+    "host": "localhost",
+    "dialect": "mysql"
+  }
+}
