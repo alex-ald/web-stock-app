@@ -1,11 +1,11 @@
-import Sequelize from 'sequelize';
-import path from 'path';
-import fs from 'fs';
+import Sequelize from 'sequelize'
+import path from 'path'
+import fs from 'fs'
 import * as models from './models'
 
-var db = {};
-const env = process.env.NODE_ENV || 'developement';
-const config = require('../config.json')[env];
+var db = {}
+const env = process.env.NODE_ENV || 'developement'
+const config = require('../config.json')[env]
 
 var sequelize = new Sequelize(config.database, config.username, config.password, config)
 
@@ -20,14 +20,14 @@ for( let mdl in models) {
 // Apply associations
 Object.keys(db).forEach((modelName) => {
  if (db[modelName].associate) {
-   db[modelName].associate(db);
+   db[modelName].associate(db)
  }
 });
 
 // Adds `sequelize` instance to db object.
-db.sequelize = sequelize;
+db.sequelize = sequelize
 
 // Adds `Sequelize` class to db object.
-db.Sequelize = Sequelize;
+db.Sequelize = Sequelize
 
-export default db;
+export default db

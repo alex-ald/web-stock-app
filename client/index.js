@@ -11,9 +11,10 @@ import { configureStore } from '../common/store'
 
 const initialState = {...window.INITIAL_STATE} || {}
 
-// Set up Redux (note: this API requires redux@>=3.1.0):
+// Set up Redux
 const store = configureStore(initialState)
 
+// obtain container for React components
 const container = document.getElementById('root')
 
 const render = () => {
@@ -23,12 +24,8 @@ const render = () => {
   // We need to have a root route for HMR to work.
   const routes = require('../common/routes').default
 
-  // Pull child routes using match. Adjust Router for vanilla webpack HMR,
-  // in development using a new key every time there is an edit.
+  // Renders the appropriate view from our routes and the requested location
   match({ routes, location }, () => {
-    // Render app with Redux and router context to container element.
-    // We need to have a random in development because of `match`'s dependency on
-    // `routes.` Normally, we would want just one file from which we require `routes` from.
     ReactDOM.render(
       <Provider store={store}>
         <Router routes={routes} history={browserHistory} key={Math.random()} />
@@ -40,6 +37,7 @@ const render = () => {
 
 const unsubscribeHistory = render()
 
+// needed for hot loading on React routes
 if (module.hot) {
   module.hot.accept('../common/routes', () => {
     unsubscribeHistory()

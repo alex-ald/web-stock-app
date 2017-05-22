@@ -4,12 +4,13 @@ const initialState = {
   host: '',
   protocol: ''
 }
+
+// reducer holds url route for api requests
 const sourceRequest = (state = initialState, action) => state
 
 import fetchedData from './reducers/fetchedData/reducer'
 
-// Only combine reducers needed for initial render, others will be
-// added async
+// add all reducers to the redux store
 export default function createReducer () {
   return combineReducers({
     sourceRequest,

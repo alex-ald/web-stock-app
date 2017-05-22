@@ -1,33 +1,50 @@
+// imports associated to the server
 import express from 'express'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import morgan from 'morgan'
+import http from 'http'
 
+// import socket.io for socket integration
+import socketIO from 'socket.io'
+
+// imports for development configurations
+import webpack from 'webpack'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
+import webpackConfig from '../tools/webpack.client.dev'
+import { compileDev, startDev } from '../tools/dx'
+
+// imports for rendering server side React
 import React from 'react'
 import ReactDOM from 'react-dom/server'
 import { createMemoryHistory, RouterContext, match } from 'react-router'
 import { Provider } from 'react-redux'
 import Helm from 'react-helmet' // because we are already using helmet
-
-import webpack from 'webpack'
-import webpackDevMiddleware from 'webpack-dev-middleware'
-import webpackHotMiddleware from 'webpack-hot-middleware'
-
-import config from './config'
-import webpackConfig from '../tools/webpack.client.dev'
-import { compileDev, startDev } from '../tools/dx'
 import { configureStore } from '../common/store'
 import reducer from '../common/createReducer'
 import routes from '../common/routes'
 
+import config from './config'
 import db from '../database/models'
+import scheduledJobs from './scheduledJobs'
+import socketListener from './api/socketListener'
 
 // define environment
 const isProd = config.nodeEnv === 'production'
 const isTest = config.nodeEnv === 'test'
 
-// obtain app object from express
+// create the server object
 const app = express()
+const server = http.Server(app)
+
+// create the socket.io object and pass it to socketListener function to separate socket functionality
+export const io = socketIO(server)
+socketListener(io)
+
+
+// activate all scheduled jobs
+scheduledJobs(db, io)
 
 // define server configurations
 let assets = null
@@ -55,11 +72,10 @@ if (isProd || isTest) {
   app.use(webpackHotMiddleware(compiler, { log: console.log }))
 }
 
+// ensure the server is communicating with the server
 db.sequelize.authenticate()
   .then((result) => {
     console.log('Connection has been established successfully.');
-    // db.sequelize.sync()
-    //   .then();
   })
   .catch((err) => {
     console.log('Unable to connect to the database: ');
@@ -118,13 +134,14 @@ app.get('*', (req, res) => {
         markup: data.html,
         initialState: JSON.stringify(initialState),
         vendorJs: (isProd ? assets.vendor.js : '/vendor.js' ),
-        mainJs: (isProd ? assets.main.js : '/main.js')
+        mainJs: (isProd ? assets.main.js : '/main.js'),
+        socketIO: '/socket.io/socket.io.js'
       })
   })
 })
 
 // start server
-app.listen(config.port, (err) => {
+server.listen(config.port, (err) => {
   if (config.nodeEnv === 'production' || config.nodeEnv === 'test') {
     if (err) console.log(err)
     console.log(`server ${config.id} listening on port ${config.port}`)

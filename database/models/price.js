@@ -9,14 +9,20 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.DECIMAL(15,2),
       allowNull: false
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date()
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: new Date()
+    }
   }, {
     classMethods: {
       associate: function(models) {
         Price.belongsTo(models.Company)
       },
     }
-  });
-  return Price;
-};
+  })
+  return Price
+}

@@ -26,9 +26,13 @@ module.exports = {
       stockName: {
         type: Sequelize.STRING,
         allowNull: false
+      },
+      url: {
+        type: Sequelize.STRING
       }
     });
   },
+
   down: function (queryInterface, Sequelize) {
     return queryInterface.dropTable('Companies');
   }

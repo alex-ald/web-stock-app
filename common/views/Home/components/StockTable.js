@@ -1,6 +1,7 @@
 import React from 'react'
 
 class StockTable extends React.Component {
+  // add plus symbol to price if positive
   formatPriceChange (priceChange) {
     if (priceChange > 0) {
       return '+' + priceChange
@@ -9,6 +10,7 @@ class StockTable extends React.Component {
     }
   }
 
+  // determines the class for the element by checking if price is positive or negative
   getPriceChangeClass (priceChange) {
     if (priceChange > 0) {
       return 'positive-price-change'
@@ -17,6 +19,10 @@ class StockTable extends React.Component {
     } else {
       return null
     }
+  }
+
+  filterTable () {
+    console.log('filtering...')
   }
 
   render () {
@@ -28,11 +34,11 @@ class StockTable extends React.Component {
       // create all rows for the table
       tableRows.push(
         <tr key={i}>
-          <td>{company.stockName}</td>
-          <td>{company.name}</td>
-          <td>{company.price}</td>
-          <td className={priceChangeClass}>{this.formatPriceChange(company.priceChange)}</td>
-          <td className={priceChangeClass}>{company.priceChangePercentage + '%'}</td>
+          <td data-header='Stock Code'>{company.stockName}</td>
+          <td data-header='Company Name'><a href={company.url} target='blank'>{company.name}</a></td>
+          <td data-header="Today's Price">{'$' + (company.todaysPrice || '0.00')}</td>
+          <td data-header='Price Change ($)' className={priceChangeClass}>{this.formatPriceChange((company.priceChange.toFixed(2) || '0.00'))}</td>
+          <td data-header='Price Change (%)' className={priceChangeClass}>{(company.priceChangePercentage.toFixed(2) || '0.00') + '%'}</td>
         </tr>
       )
     })
@@ -40,11 +46,11 @@ class StockTable extends React.Component {
     return (
       <table className={className}>
         <tr>
-          <th></th>
-          <th>Company Name</th>
-          <th>Today's Price</th>
-          <th>Price Change (Since Yesterday)</th>
-          <th>Change %</th>
+          <th><a>Stock Code</a></th>
+          <th><a>Company Name</a></th>
+          <th><a>Today's Price</a></th>
+          <th><a>Price Change ($)</a></th>
+          <th><a>Price Change (%)</a></th>
         </tr>
         { tableRows }
       </table>
