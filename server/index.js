@@ -130,7 +130,7 @@ app.get('*', (req, res) => {
     // obtain head information from helmet
     const head = Helm.rewind()
 
-    // send client information
+    // send client resources
     res.status(200).render(
       'index',
       {

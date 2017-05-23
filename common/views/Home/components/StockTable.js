@@ -21,7 +21,7 @@ class StockTable extends React.Component {
         <tr key={i}>
           <td data-header='Stock Code'>{company.stockName}</td>
           <td data-header='Company Name'><a href={company.url} target='blank'>{company.name}</a></td>
-          <td data-header="Today's Price">{'$' + (company.todaysPrice || '0.00')}</td>
+          <td data-header="Today's Price">{'$' + (company.todaysPrice ? company.todaysPrice.toFixed(2) : '0.00')}</td>
           <td data-header='Price Change ($)' className={priceChangeClass}>{this.formatPriceChange((company.priceChange.toFixed(2) || '0.00'))}</td>
           <td data-header='Price Change (%)' className={priceChangeClass}>{(company.priceChangePercentage.toFixed(2) || '0.00') + '%'}</td>
         </tr>

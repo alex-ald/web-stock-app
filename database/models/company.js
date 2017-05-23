@@ -17,12 +17,10 @@ module.exports = function(sequelize, DataTypes) {
     },
     url: DataTypes.STRING,
     createdAt: {
-      type: DataTypes.DATE,
-      defaultValue: new Date()
+      type: DataTypes.DATE
     },
     updatedAt: {
-      type: DataTypes.DATE,
-      defaultValue: new Date()
+      type: DataTypes.DATE
     }
   }, {
     getterMethods: {

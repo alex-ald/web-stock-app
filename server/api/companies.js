@@ -5,10 +5,6 @@ const router = new Router()
 
 // get all companies and their information
 router.get('/', function (req, res) {
-  // end of today's date and start of yesterday's date
-  var currentDate = new Date()
-  var endOfToday = currentDate.setUTCHours(23,59,59,59)
-  var startOfYesterday = new Date(currentDate.setDate(currentDate.getDate()-1)).setUTCHours(0,0,0,0)
 
   // check if their is a requested ordering
   var orderBy = null
@@ -25,6 +21,7 @@ router.get('/', function (req, res) {
     }
   }
 
+  // check the ordering format
   var orderFormat = 'ASC'
   if (typeof req.query.isAscending === 'string') {
     if (req.query.isAscending.toLowerCase() === 'false') {
@@ -34,21 +31,17 @@ router.get('/', function (req, res) {
 
   // obtain all companies
   db.Company.findAndCountAll({
-    order: orderBy + ' ' + orderFormat,
+    order: orderBy + ' ' + orderFormat, // Ex: 'name DESC'
+    offset: parseInt(req.query.offset) || 0,
+    limit: parseInt(req.query.limit) || 10,
     include: [{
       model: db.Price,
-      where: {
-        createdAt: {
-          $lte: endOfToday,
-          $gte: startOfYesterday
-        }
-      },
       limit: 2,
       order: 'Price.createdAt DESC'
-    }],
-    offset: parseInt(req.query.offset) || 0,
-    limit: parseInt(req.query.limit) || 4
+    }]
   }).then(function(companies) {
+    // time out to demonstrate the ascynchronous calls on the client,
+    // NOTE: Should be removed for production
     setTimeout ( () => {
         res.status(200).json(companies)
       },
@@ -68,6 +61,7 @@ router.post('/', function (req, res) {
     })
 })
 
+// for developer purposes, will execute the scheduler task: NewRandomCompanyPrices
 router.post('/new-prices', function (req, res) {
   db.Company.generateRandomCompanyPrices(db).then(function () {
     res.locals.io.emit('new-data')

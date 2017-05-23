@@ -43,6 +43,7 @@ button:hover {
   text-align: center;
 }
 
+/* TABLE COLUM ORDER BY ARROW STYLING - STRART */
 .arrow {
   display: list-item;
   border: solid white;
@@ -63,6 +64,8 @@ button:hover {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
 }
+
+/* TABLE COLUM ORDER BY ARROW STYLING - END */
 
 /* TABLE STYLING - START */
 .stock-table {
