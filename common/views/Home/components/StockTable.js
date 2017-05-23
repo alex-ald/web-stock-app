@@ -10,27 +10,12 @@ class StockTable extends React.Component {
     }
   }
 
-  // determines the class for the element by checking if price is positive or negative
-  getPriceChangeClass (priceChange) {
-    if (priceChange > 0) {
-      return 'positive-price-change'
-    } else if (priceChange < 0) {
-      return 'negative-price-change'
-    } else {
-      return null
-    }
-  }
-
-  filterTable () {
-    console.log('filtering...')
-  }
-
   render () {
-    let { className, stockInfo } = this.props
+    let { className, stockInfo, getPriceChangeClass, filterTable, isAscending, orderBy } = this.props
 
     let tableRows = []
     stockInfo.map((company, i) => {
-      let priceChangeClass = this.getPriceChangeClass(company.priceChange)
+      let priceChangeClass = getPriceChangeClass(company.priceChange)
       // create all rows for the table
       tableRows.push(
         <tr key={i}>
@@ -43,14 +28,42 @@ class StockTable extends React.Component {
       )
     })
 
+    let orderByClass = (isAscending ? 'arrow up' : 'arrow down')
+
     return (
       <table className={className}>
         <tr>
-          <th><a>Stock Code</a></th>
-          <th><a>Company Name</a></th>
-          <th><a>Today's Price</a></th>
-          <th><a>Price Change ($)</a></th>
-          <th><a>Price Change (%)</a></th>
+          <th>
+            <div key='stock code' data-sortable='true' onClick={filterTable.bind(this, 'stock code')}>
+              <a>Stock Code</a>
+              { orderBy === 'stock code' &&
+                <div className={orderByClass}></div>
+              }
+            </div>
+          </th>
+          <th>
+            <div name='name' data-sortable='true' onClick={filterTable.bind(this, 'name')}>
+              <a>Company Name</a>
+              { orderBy === 'name' &&
+                <div className={orderByClass}></div>
+              }
+            </div>
+          </th>
+          <th>
+            <div>
+              <a>Today's Price</a>
+            </div>
+          </th>
+          <th>
+            <div>
+              <a>Price Change ($)</a>
+            </div>
+          </th>
+          <th>
+            <div>
+              <a>Price Change (%)</a>
+            </div>
+          </th>
         </tr>
         { tableRows }
       </table>

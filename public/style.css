@@ -43,6 +43,27 @@ button:hover {
   text-align: center;
 }
 
+.arrow {
+  display: list-item;
+  border: solid white;
+  border-width: 0 .2em .2em 0;
+  width: .5em;
+  height: .5em;
+  margin: 0 auto;
+  margin-top: .4em;
+  list-style: none;
+}
+
+.up {
+    transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+}
+
+.down {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+}
+
 /* TABLE STYLING - START */
 .stock-table {
   width: 100%;
@@ -64,6 +85,18 @@ button:hover {
   border-collapse: collapse;
   background: #967D69;
   color: white;
+}
+
+.stock-table th > div {
+  padding: .5em 0;
+  margin: 0 .5em;
+  color: white;
+}
+
+.stock-table th div[data-sortable='true'] {
+  background: #897260;
+  border-radius: .3em;
+  cursor: pointer;
 }
 
 .stock-table th, .stock-table td  {
@@ -104,21 +137,12 @@ button:hover {
 
 /* RESPONSIVE STYLING FOR TABLE - END */
 
-.stock-table a {
+.stock-table td a {
   color: #606060;
 }
 
-.stock-table a:hover {
+.stock-table td a:hover {
   color: #232323;
-}
-
-.stock-table tr:first-child a {
-  display: block;
-  padding: .5em 0;
-  margin: 0 .5em;
-  background: #897260;
-  color: white;
-  border-radius: .3em;
 }
 
 .positive-price-change {

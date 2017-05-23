@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import db from '../../database/models/'
-import { io } from '../index'
 
 const router = new Router()
 
@@ -11,8 +10,31 @@ router.get('/', function (req, res) {
   var endOfToday = currentDate.setUTCHours(23,59,59,59)
   var startOfYesterday = new Date(currentDate.setDate(currentDate.getDate()-1)).setUTCHours(0,0,0,0)
 
+  // check if their is a requested ordering
+  var orderBy = null
+  if (typeof req.query.orderBy === 'string') {
+    switch (req.query.orderBy.toLowerCase()) {
+      case 'stock code':
+        orderBy = 'stockName'
+        break
+      case 'name':
+        orderBy = 'name'
+        break
+      default:
+        break
+    }
+  }
+
+  var orderFormat = 'ASC'
+  if (typeof req.query.isAscending === 'string') {
+    if (req.query.isAscending.toLowerCase() === 'false') {
+        orderFormat = 'DESC'
+    }
+  }
+
   // obtain all companies
   db.Company.findAndCountAll({
+    order: orderBy + ' ' + orderFormat,
     include: [{
       model: db.Price,
       where: {
@@ -48,7 +70,7 @@ router.post('/', function (req, res) {
 
 router.post('/new-prices', function (req, res) {
   db.Company.generateRandomCompanyPrices(db).then(function () {
-    io.emit('new-data')
+    res.locals.io.emit('new-data')
     res.status(200).json({success: true})
   }).catch(function () {
     res.json({ success: false })

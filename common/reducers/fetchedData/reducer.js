@@ -30,11 +30,11 @@ export default function fetchedData (state = initialState, action) {
     case LOAD_STOCK_STATISTICS_SUCCESS:
       return { ...state,
         stockStatistics: {...state.stockStatistics,
-          data: (state.stockStatistics.offset > 0 ? state.stockStatistics.data.concat(action.data) : action.data),
+          data: action.data,
           lastFetched: new Date(),
           error: null,
           isLoading: false,
-          offset: state.stockStatistics.offset + action.data.length,
+          offset: action.offset,
           totalInDB: action.totalInDB
         }
       }

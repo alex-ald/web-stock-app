@@ -9,11 +9,13 @@ const initialState = {
 const sourceRequest = (state = initialState, action) => state
 
 import fetchedData from './reducers/fetchedData/reducer'
+import tableUtils from './reducers/tableUtils/reducer'
 
 // add all reducers to the redux store
 export default function createReducer () {
   return combineReducers({
     sourceRequest,
-    fetchedData
+    fetchedData,
+    tableUtils
   })
 }

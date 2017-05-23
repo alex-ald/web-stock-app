@@ -3,7 +3,7 @@ const fs =  require('fs')
 const path = require('path')
 
 const CONFIG = require('./webpack.base')
-const { SERVER_ENTRY, SERVER_OUTPUT, PUBLIC_PATH }  = CONFIG
+// const { SERVER_ENTRY, SERVER_OUTPUT, PUBLIC_PATH }  = CONFIG
 
 function getExternals () {
   const nodeModules = fs.readdirSync(path.join(process.cwd(), 'node_modules'))
@@ -16,9 +16,9 @@ function getExternals () {
 module.exports = {
   target: 'node',
   devtool: 'inline-source-map',
-  entry: SERVER_ENTRY,
+  entry: CONFIG.SERVER_ENTRY,
   output: {
-    path: SERVER_OUTPUT,
+    path: CONFIG.SERVER_OUTPUT,
     filename: 'server.js'
   },
   externals: getExternals(),

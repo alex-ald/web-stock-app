@@ -39,7 +39,7 @@ const app = express()
 const server = http.Server(app)
 
 // create the socket.io object and pass it to socketListener function to separate socket functionality
-export const io = socketIO(server)
+const io = socketIO(server)
 socketListener(io)
 
 
@@ -52,6 +52,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('./public'))
 app.set('view engine', 'ejs')
+
+// add middleware to pass socket.io object to requests
+app.use((req, res, next) => {
+  res.locals.io = io
+  next()
+})
 
 // define server configurations based on environment
 if (isProd || isTest) {
@@ -144,7 +150,7 @@ app.get('*', (req, res) => {
 server.listen(config.port, (err) => {
   if (config.nodeEnv === 'production' || config.nodeEnv === 'test') {
     if (err) console.log(err)
-    console.log(`server ${config.id} listening on port ${config.port}`)
+    console.log(`server listening on port ${config.port}`)
   } else {
     // open browser window
     startDev(config.port, err)

@@ -3,12 +3,12 @@ const webpack = require('webpack')
 const AssetsPlugin = require('assets-webpack-plugin')
 
 const CONFIG = require('./webpack.base')
-const { CLIENT_ENTRY, CLIENT_OUTPUT, PUBLIC_PATH } = CONFIG
+// const { CLIENT_ENTRY, CLIENT_OUTPUT, PUBLIC_PATH } = CONFIG
 
 module.exports = {
   devtool: false,
   entry: {
-    main: [CLIENT_ENTRY],
+    main: [CONFIG.CLIENT_ENTRY],
     vendor: [
       'react',
       'react-dom',
@@ -20,8 +20,8 @@ module.exports = {
   output: {
     filename: '[name]_[chunkhash].js',
     chunkFilename: '[name]_[chunkhash].js',
-    publicPath: PUBLIC_PATH,
-    path: CLIENT_OUTPUT
+    publicPath: CONFIG.PUBLIC_PATH,
+    path: CONFIG.CLIENT_OUTPUT
   },
   plugins: [
     new webpack.DefinePlugin({
